@@ -60,7 +60,40 @@ export async function getUserById(req, res) {
     } catch (err) {
         res.status(constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
             success: false,
-            message: err.message
+            message: err.message,
+        })
+    }
+}
+
+
+export async function getUserByCred(req, res) {
+    try {
+        console.log(req.data)
+        const id = req.data.id
+        const result = await Users.findOne({
+            where: {
+                id:parseInt(id)
+            },
+            attributes:{
+                exclude: ["password"]
+            },
+            include: [
+                {
+                    model: Links,
+                    as: "links",
+                },
+            ],
+        })
+        res.status(constants.HTTP_STATUS_OK).json({
+            success: true,
+            message: "Success Get data",
+            results: result
+        })
+    } catch (err) {
+        res.status(constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: req.data,
+            test:"test"
         })
     }
 }

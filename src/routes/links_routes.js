@@ -27,7 +27,7 @@ linksRoutes.get("", linksControllers.getAllLinks)
  * @swagger
  * /links:
  *   post:
- *     description: Add new size
+ *     description: Add new link
  *     tags:
  *       - Links
  *     requestBody:

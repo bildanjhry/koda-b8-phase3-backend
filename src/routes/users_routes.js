@@ -1,7 +1,9 @@
 import { Router } from "express";
 import * as usersControllers from "../controllers/users.ctrl.js"
+import authMiddleware from "../middlewares/auth.js";
 
 const usersRoutes = Router()
+usersRoutes.use(authMiddleware)
 
 /**
  * @swagger
@@ -17,6 +19,8 @@ const usersRoutes = Router()
  *          description: Invalid input
 */
 usersRoutes.get("", usersControllers.getAllUsers)
+
+usersRoutes.get("/links", usersControllers.getUserByCred)
 
 /**
  * @swagger
@@ -38,6 +42,8 @@ usersRoutes.get("", usersControllers.getAllUsers)
  *       "400":
  *          description: Invalid input
 */
-usersRoutes.get("/:id", usersControllers.getAllUsers)
+usersRoutes.get("/:id", usersControllers.getUserById)
+
+
 
 export default usersRoutes
