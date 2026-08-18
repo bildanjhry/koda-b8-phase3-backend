@@ -3,6 +3,7 @@ import swaggerUi from "swagger-ui-express"
 import swaggerJSDoc from "swagger-jsdoc"
 import linksRoutes from "./links_routes.js";
 import usersRoutes from "./users_routes.js";
+import authRoutes from "./auth_routes.js";
 
 const swaggerOpt = {
   definition: {
@@ -30,6 +31,7 @@ const routes = Router()
 const swagger = swaggerJSDoc(swaggerOpt)
 routes.use("/links", linksRoutes)
 routes.use("/users", usersRoutes)
+routes.use("/auth", authRoutes)
 routes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger))
 
 export default routes
