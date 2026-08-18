@@ -36,35 +36,43 @@ export async function registerUser(req, res) {
 }
 
 export async function loginUser(req, res) {
-    try{
+    try {
         const { email, password } = req.body
         const user = await Users.findOne({
             where: {
                 email: email
             }
         })
-        if(!user){
+        if (!user) {
             throw new Error("User Not Found")
         }
         const isMatch = await libsBcrypt.comparePass(password, user.password)
-        if(!isMatch){
+        if (!isMatch) {
             throw new Error("Invalid Password")
         }
-        const token = libsJwt.sign({id: user.id})
+        const token = libsJwt.sign({ id: user.id })
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 1000 * 60 * 60 * 24
+        })
+        
         res.status(constants.HTTP_STATUS_OK).json({
-            success:true,
-            message:"Login Success",
+            success: true,
+            message: "Login Success",
             results: {
                 id: user.id,
                 token: token
             }
         })
 
-    } catch(err){
+    } catch (err) {
         console.log(err)
         res.status(constants.HTTP_STATUS_UNAUTHORIZED).json({
-            success:false,
-            message:err.message
+            success: false,
+            message: err.message
         })
     }
 }

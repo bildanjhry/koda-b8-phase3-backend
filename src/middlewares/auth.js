@@ -11,6 +11,14 @@ export default function authMiddleware(req, res, next) {
         if (req.method === "OPTIONS") {
             return next();
         }
+        const tokenClient = req.cookies.token
+        let data 
+        if (tokenClient) {
+            data = libsJwt.verify(tokenClient)
+            req.data = data
+            return next()
+        }
+
         const auth = req.header("Authorization") || ""
         if (auth === "" || !auth.startsWith("Bearer ")) {
             return res.status(constants.HTTP_STATUS_UNAUTHORIZED).json({
@@ -19,7 +27,7 @@ export default function authMiddleware(req, res, next) {
             });
         }
         const token = auth.split(" ")[1]
-        const data = libsJwt.verify(token)
+        data = libsJwt.verify(token)
         req.data = data
         return next()
     } catch (err) {
