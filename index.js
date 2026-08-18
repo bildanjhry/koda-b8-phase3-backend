@@ -2,6 +2,7 @@ import express from "express"
 import routes from "./src/routes/index.js"
 
 const app = express()
+app.use(express.urlencoded())
 app.use(routes)
 
 const PORT = process.env.PORT || 8082

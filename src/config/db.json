@@ -1,9 +1,10 @@
 {
   "development": {
-    "username": "shorterlink",
-    "password": null,
+    "username": "postgres",
+    "password": "c6263af933e8bb088849892828452c90",
     "database": "postgres",
     "host": "127.0.0.1",
+    "port":"5435",
     "dialect": "postgres"
   },
   "test": {
