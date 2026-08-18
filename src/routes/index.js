@@ -1,6 +1,8 @@
 import { Router } from "express";
 import swaggerUi from "swagger-ui-express"
 import swaggerJSDoc from "swagger-jsdoc"
+import linksRoutes from "./links_routes.js";
+import usersRoutes from "./users_routes.js";
 
 const swaggerOpt = {
   definition: {
@@ -21,11 +23,13 @@ const swaggerOpt = {
       }
     }
   },
-  apis: ["./src/routes/*route.js"],
+  apis: ["./src/routes/*routes.js"],
 }
 
 const routes = Router()
 const swagger = swaggerJSDoc(swaggerOpt)
+routes.use("/links", linksRoutes)
+routes.use("/users", usersRoutes)
 routes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger))
 
 export default routes
