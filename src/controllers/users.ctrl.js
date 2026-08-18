@@ -11,6 +11,9 @@ const { Users, Links } = db
 export async function getAllUsers(req, res) {
     try {
         const result = await Users.findAll({
+            attributes: {
+                exclude:["password"]
+            },
             include: [
                 {
                     model: Links,
@@ -24,6 +27,7 @@ export async function getAllUsers(req, res) {
             results: result
         })
     } catch (err) {
+        console.log(err)
         res.status(constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
             success: false,
             message: err.message
@@ -37,6 +41,9 @@ export async function getUserById(req, res) {
         const result = await Users.findOne({
             where: {
                 id:parseInt(id)
+            },
+            attributes:{
+                exclude: ["password"]
             },
             include: [
                 {

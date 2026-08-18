@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { default as db} from "../models/index.cjs"
 import * as linksControllers from "../controllers/links.crtl.js"
+import authMiddleware from "../middlewares/auth.js";
 const linksRoutes = Router()
+
+linksRoutes.use(authMiddleware)
 
 /**
  * @swagger
@@ -15,6 +18,8 @@ const linksRoutes = Router()
  *          description: Success add new link
  *       "400":
  *          description: Invalid input
+ *     security:
+ *        - token: []
 */
 linksRoutes.get("", linksControllers.getAllLinks)
 
@@ -41,6 +46,8 @@ linksRoutes.get("", linksControllers.getAllLinks)
  *          description: Success add new category
  *       "400":
  *          description: Invalid input
+ *     security:
+ *        - token: []
 */
 linksRoutes.post("", linksControllers.createShortedUrl)
 
