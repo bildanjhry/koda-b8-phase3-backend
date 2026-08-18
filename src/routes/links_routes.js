@@ -41,6 +41,8 @@ linksRoutes.get("", linksControllers.getAllLinks)
  *                 properties:
  *                    url:
  *                      type: string
+ *                    slugs:
+ *                      type: string
  *     responses:
  *       "200":
  *          description: Success add new category
@@ -50,5 +52,30 @@ linksRoutes.get("", linksControllers.getAllLinks)
  *        - token: []
 */
 linksRoutes.post("", linksControllers.createShortedUrl)
+
+/**
+ * @swagger
+ * /links/{shorted}:
+ *   delete:
+ *     description: delete shorted url
+ *     tags:
+ *       - Links
+ *     parameters:
+ *       - in: path
+ *         name: shorted
+ *         required: true
+ *         schema:
+ *            type: string
+ *         description: Shorted Url
+ *     responses:
+ *        "200":
+ *          description: Success Delete url
+ *        "400":
+ *          description: Url not found
+ *     security:
+ *        - token: []
+ */
+linksRoutes.delete("/:shorted", linksControllers.deleteShorted)
+
 
 export default linksRoutes
