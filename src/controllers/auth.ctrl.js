@@ -56,14 +56,13 @@ export async function loginUser(req, res) {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
-            maxAge: 1000 * 60 * 60 * 24
+            maxAge: 1000 * 60 * 60
         })
         
         res.status(constants.HTTP_STATUS_OK).json({
             success: true,
             message: "Login Success",
             results: {
-                token: token,
                 users:{
                     id:user.id,
                     email:user.email
@@ -72,7 +71,6 @@ export async function loginUser(req, res) {
         })
 
     } catch (err) {
-        console.log(err)
         res.status(constants.HTTP_STATUS_UNAUTHORIZED).json({
             success: false,
             message: err.message
