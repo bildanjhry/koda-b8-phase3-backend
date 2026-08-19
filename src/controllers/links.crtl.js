@@ -2,6 +2,7 @@ import { constants } from "http2"
 import { default as db } from "../models/index.cjs"
 const { Links } = db
 import generateShortCode from "../libs/generate_code.js"
+import sanitizes from "../libs/sanitizes.js"
 
 /**
  * 
@@ -37,6 +38,13 @@ export async function createShortedUrl(req, res) {
         if(!slugs){
             shorted = generateShortCode(6)
         } else {
+            const isReserverd = sanitizes(slugs)
+            if(!isReserverd){
+                const err = {}
+                err.code = 400
+                err.message = "Reserved word are invalid for slugs"
+                throw err
+            }
             shorted = slugs
         }
         const resLink = await Links.create({
@@ -56,7 +64,7 @@ export async function createShortedUrl(req, res) {
             results:result
         })
     } catch (err) {
-        res.status(constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+        res.status(err.code || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
             success: false,
             message: err.message
         })
