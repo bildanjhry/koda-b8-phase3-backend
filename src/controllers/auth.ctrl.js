@@ -58,20 +58,70 @@ export async function loginUser(req, res) {
             sameSite: "lax",
             maxAge: 1000 * 60 * 60
         })
-        
+
         res.status(constants.HTTP_STATUS_OK).json({
             success: true,
             message: "Login Success",
             results: {
-                users:{
-                    id:user.id,
-                    email:user.email
+                users: {
+                    id: user.id,
+                    email: user.email
                 }
             }
         })
 
     } catch (err) {
         res.status(constants.HTTP_STATUS_UNAUTHORIZED).json({
+            success: false,
+            message: err.message
+        })
+    }
+}
+
+export async function logoutUser(req, res) {
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+        });
+
+        return res.json({
+            success: true,
+            message: "Success Logout",
+        });
+
+    } catch (err) {
+        res.status(constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: err.message,
+        })
+    }
+}
+
+export async function sessionUser(req, res) {
+    try {
+        const id_user = req.data.id
+        const user = await Users.findByPk(id_user, 
+            {
+                attributes: ["id", "email", "createdAt"],
+            }
+        )
+
+        if (!user) {
+          const err = {}
+          err.code = 401
+          err.message = "User not found"
+          throw err
+        }
+
+        res.status(constants.HTTP_STATUS_OK).json({
+            success:true,
+            message: "Success get User",
+            results: user
+        })
+    } catch (err) {
+        res.status(err.code || constants.HTTP_STATUS_UNAUTHORIZED).json({
             success: false,
             message: err.message
         })

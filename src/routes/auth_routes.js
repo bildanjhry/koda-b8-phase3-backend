@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { default as db} from "../models/index.cjs"
 import * as authControllers from "../controllers/auth.ctrl.js"
+import authMiddleware from "../middlewares/auth.js";
 const authRoutes = Router()
 
 /**
@@ -34,7 +35,7 @@ authRoutes.post("/register", authControllers.registerUser)
 
 /**
  * @swagger
- * /auth/login:
+ * /api/login:
  *   post:
  *     description: Login into system
  *     tags:
@@ -60,5 +61,35 @@ authRoutes.post("/register", authControllers.registerUser)
  *          description: Invalid input
 */
 authRoutes.post("/login", authControllers.loginUser)
+
+/**
+ * @swagger
+ * /api/logout:
+ *   post:
+ *     description: Logout from system
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       "200":
+ *          description: Success Logout
+ *       "500":
+ *          description: Something went wrong
+*/
+authRoutes.post("/logout", authControllers.logoutUser)
+
+/**
+ * @swagger
+ * /api/session:
+ *   get:
+ *     description: Check session user
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       "200":
+ *          description: Success get user
+ *       "401":
+ *          description: User not found
+*/
+authRoutes.get("/session", authMiddleware, authControllers.sessionUser)
 
 export default authRoutes
