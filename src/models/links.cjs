@@ -11,16 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Links.belongsTo(models.Users, {
-        foreignKey: 'id_user',
+        foreignKey: 'user_id',
         as: 'user',
       });
     }
   }
   Links.init({
-    id_user: DataTypes.INTEGER,
-    url: DataTypes.STRING,
-    shorted: DataTypes.STRING,
-    new_link:DataTypes.STRING
+    user_id: DataTypes.INTEGER,
+    original_url: DataTypes.STRING,
+    slug: DataTypes.STRING,
+    shorted_url:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Links',

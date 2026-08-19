@@ -63,8 +63,11 @@ export async function loginUser(req, res) {
             success: true,
             message: "Login Success",
             results: {
-                id: user.id,
-                token: token
+                token: token,
+                users:{
+                    id:user.id,
+                    email:user.email
+                }
             }
         })
 

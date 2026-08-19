@@ -28,46 +28,52 @@ export async function getAllLinks(req, res) {
 
 export async function createShortedUrl(req, res) {
     try {
-        const { url, slugs } = req.body
+        const { url, slug } = req.body
         const id_user = req.data.id
         const validUrl = new URL(url)
         if(!validUrl.protocol === "http:" || !validUrl.protocol === "https:"){
             throw new Error("Invalid Url, only accept http or https")
         }
         let shorted = ''
-        if(!slugs){
+        if(!slug){
             shorted = generateShortCode(6)
         } else {
-            const isReserverd = sanitizes(slugs)
-            if(!isReserverd){
+            const isReserved = sanitizes(slug)
+            if(!isReserved){
                 const err = {}
                 err.code = 400
-                err.message = "Reserved word are invalid for slugs"
+                err.message = "Reserved word are invalid for slug"
                 throw err
             }
-            shorted = slugs
+            shorted = slug
+        }
+        if(!url || !id_user){
+            throw new Error("No data")
         }
         const resLink = await Links.create({
-            id_user:id_user,
-            url:url,
-            shorted:`${shorted}`,
-            new_link:`${process.env.URL}/${shorted}`
+            user_id:id_user,
+            original_url:url,
+            slug:`${shorted}`,
+            shorted_url:`${process.env.URL}/${shorted}`
         })
+
         const result = {
-            id_user: resLink.id_user,
+            id: resLink.id,
             created_at: resLink.createdAt,
-            shorted:resLink.shorted,
-            newLink:resLink.new_link
+            slug:resLink.slug,
+            original_url:resLink.original_url,
+            short_url:resLink.shorted_url
         }
         res.status(constants.HTTP_STATUS_CREATED).json({
             success:true,
-            message:"Success create shorted links",
+            message:"Success create shorted url",
             results:result
         })
     } catch (err) {
         res.status(err.code || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
             success: false,
-            message: err.message
+            message: err.message,
+            results:null
         })
     }
 }
@@ -100,16 +106,16 @@ export async function deleteShorted(req, res) {
 
 export async function redirectUrl(req, res) {
     try{
-        const url = req.params.slugs
+        const slug = req.params.slug
         const link = await Links.findOne({
             where:{
-                shorted:url
+                slug:slug
             }
         })
         if(!link) {
-            throw new Error("Shorted Url not found")
+            throw new Error("Slug Url not found")
         }
-        res.redirect(link.url)
+        res.redirect(link.original_url)
         
     } catch(err){
         res.status(constants.HTTP_STATUS_BAD_REQUEST).json({

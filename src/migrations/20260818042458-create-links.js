@@ -9,13 +9,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_user: {
+      user_id: {
         type: Sequelize.INTEGER
       },
-      url: {
+      original_url: {
         type: Sequelize.STRING
       },
-      shorted: {
+      slug: {
+        type: Sequelize.STRING,
+        unique: true
+      },
+      shorted_url: {
         type: Sequelize.STRING
       },
       createdAt: {

@@ -28,7 +28,7 @@ fs
   })
 .forEach(file => {
   const imported = require(path.join(__dirname, file));
-  const defineModel = imported.default || imported; // handle ESM & CJS
+  const defineModel = imported.default || imported;
   const model = defineModel(sequelize, Sequelize.DataTypes);
   db[model.name] = model;
 });

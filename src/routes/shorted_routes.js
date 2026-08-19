@@ -5,7 +5,7 @@ const shortedRoutes = Router()
 
 /**
  * @swagger
- * /{slugs}:
+ * /{slug}:
  *  get:
  *    description: Redirect short url
  *    tags:
@@ -23,6 +23,6 @@ const shortedRoutes = Router()
  *       "404":
  *         description: Shorted url not found 
  */
-shortedRoutes.get("/:slugs", linksControllers.redirectUrl)
+shortedRoutes.get("/:slug", linksControllers.redirectUrl)
 
 export default shortedRoutes
