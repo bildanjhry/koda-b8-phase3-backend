@@ -72,7 +72,7 @@ export async function createShortedUrl(req, res) {
     } catch (err) {
         res.status(err.code || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
             success: false,
-            message: err.message,
+            message: err.message === "Validation error" ? "Slug already taken" : err.message,
             results:null
         })
     }
@@ -85,7 +85,7 @@ export async function deleteShorted(req, res) {
         const result =  await Links.destroy({
             where:{
                 id:id,
-                id_user:id_user
+                user_id:id_user
             }
         })
         if(result < 1){
