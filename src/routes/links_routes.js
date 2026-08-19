@@ -6,6 +6,8 @@ const linksRoutes = Router()
 
 linksRoutes.use(authMiddleware)
 
+linksRoutes.get("", linksControllers.getUserByCred)
+
 /**
  * @swagger
  * /links:
@@ -55,18 +57,18 @@ linksRoutes.post("", linksControllers.createShortedUrl)
 
 /**
  * @swagger
- * /links/{shorted}:
+ * /links/{id}:
  *   delete:
  *     description: delete shorted url
  *     tags:
  *       - Links
  *     parameters:
  *       - in: path
- *         name: shorted
+ *         name: id
  *         required: true
  *         schema:
  *            type: string
- *         description: Shorted Url
+ *         description: Shorted Url's id
  *     responses:
  *        "200":
  *          description: Success Delete url
@@ -75,7 +77,7 @@ linksRoutes.post("", linksControllers.createShortedUrl)
  *     security:
  *        - token: []
  */
-linksRoutes.delete("/:shorted", linksControllers.deleteShorted)
+linksRoutes.delete("/:id", linksControllers.deleteShorted)
 
 
 export default linksRoutes

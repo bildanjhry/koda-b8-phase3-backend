@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   Links.init({
     id_user: DataTypes.INTEGER,
     url: DataTypes.STRING,
-    shorted: DataTypes.STRING
+    shorted: DataTypes.STRING,
+    new_link:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Links',

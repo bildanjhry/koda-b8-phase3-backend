@@ -1,6 +1,6 @@
 import { constants } from "http2"
 import { default as db } from "../models/index.cjs"
-const { Links } = db
+const { Links, Users } = db
 import generateShortCode from "../libs/generate_code.js"
 import sanitizes from "../libs/sanitizes.js"
 
@@ -50,13 +50,14 @@ export async function createShortedUrl(req, res) {
         const resLink = await Links.create({
             id_user:id_user,
             url:url,
-            shorted:`${shorted}`
+            shorted:`${shorted}`,
+            new_link:`${process.env.URL}/${shorted}`
         })
         const result = {
             id_user: resLink.id_user,
             created_at: resLink.createdAt,
             shorted:resLink.shorted,
-            newLink:`${process.env.URL}/s/${resLink.shorted}`
+            newLink:resLink.new_link
         }
         res.status(constants.HTTP_STATUS_CREATED).json({
             success:true,
@@ -73,11 +74,11 @@ export async function createShortedUrl(req, res) {
 
 export async function deleteShorted(req, res) {
     try{
-        const shorted = req.params.shorted
+        const id = req.params.id
         const id_user = req.data.id
         const result =  await Links.destroy({
             where:{
-                shorted:shorted,
+                id:id,
                 id_user:id_user
             }
         })
@@ -99,7 +100,7 @@ export async function deleteShorted(req, res) {
 
 export async function redirectUrl(req, res) {
     try{
-        const url = req.params.shorted
+        const url = req.params.slugs
         const link = await Links.findOne({
             where:{
                 shorted:url
@@ -114,6 +115,36 @@ export async function redirectUrl(req, res) {
         res.status(constants.HTTP_STATUS_BAD_REQUEST).json({
             success:false,
             message:err.message
+        })
+    }
+}
+
+export async function getUserByCred(req, res) {
+    try {
+        const id = req.data.id
+        const result = await Users.findOne({
+            where: {
+                id:parseInt(id)
+            },
+            attributes:{
+                exclude: ["password"]
+            },
+            include: [
+                {
+                    model: Links,
+                    as: "links",
+                },
+            ],
+        })
+        res.status(constants.HTTP_STATUS_OK).json({
+            success: true,
+            message: "Success Get data",
+            results: result
+        })
+    } catch (err) {
+        res.status(constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: err.message,
         })
     }
 }

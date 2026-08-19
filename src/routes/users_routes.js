@@ -20,8 +20,6 @@ usersRoutes.use(authMiddleware)
 */
 usersRoutes.get("", usersControllers.getAllUsers)
 
-usersRoutes.get("/links", usersControllers.getUserByCred)
-
 /**
  * @swagger
  * /users/{id}:

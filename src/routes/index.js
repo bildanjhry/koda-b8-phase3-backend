@@ -30,9 +30,9 @@ const swaggerOpt = {
 
 const routes = Router()
 const swagger = swaggerJSDoc(swaggerOpt)
-routes.use("/links", linksRoutes)
-routes.use("/users", usersRoutes)
-routes.use("/auth", authRoutes)
+routes.use("/api/links", linksRoutes)
+routes.use("/api/users", usersRoutes)
+routes.use("/api", authRoutes)
 routes.use("", shortedRoutes)
 routes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger))
 
