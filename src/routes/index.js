@@ -34,6 +34,6 @@ routes.use("/api/links", linksRoutes)
 routes.use("/api/users", usersRoutes)
 routes.use("/api", authRoutes)
 routes.use("", shortedRoutes)
-routes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger))
+routes.use("/api-docs/api", swaggerUi.serve, swaggerUi.setup(swagger))
 
 export default routes

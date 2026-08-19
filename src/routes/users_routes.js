@@ -17,6 +17,8 @@ usersRoutes.use(authMiddleware)
  *          description: Success add new link
  *       "400":
  *          description: Invalid input
+ *     security:
+ *        - token: []
 */
 usersRoutes.get("", usersControllers.getAllUsers)
 
@@ -39,6 +41,8 @@ usersRoutes.get("", usersControllers.getAllUsers)
  *          description: Success get users
  *       "400":
  *          description: Invalid input
+ *     security:
+ *        - token: []
 */
 usersRoutes.get("/:id", usersControllers.getUserById)
 

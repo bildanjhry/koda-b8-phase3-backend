@@ -6,6 +6,21 @@ const linksRoutes = Router()
 
 linksRoutes.use(authMiddleware)
 
+/**
+ * @swagger
+ * /links-cred:
+ *   get:
+ *     description: Get links by user credentials
+ *     tags:
+ *       - Links
+ *     responses:
+ *       "200":
+ *          description: Success get links by credentials
+ *       "400":
+ *          description: Invalid input
+ *     security:
+ *        - token: []
+*/
 linksRoutes.get("", linksControllers.getUserByCred)
 
 /**
