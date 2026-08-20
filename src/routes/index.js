@@ -5,6 +5,7 @@ import linksRoutes from "./links_routes.js";
 import usersRoutes from "./users_routes.js";
 import authRoutes from "./auth_routes.js";
 import shortedRoutes from "./shorted_routes.js";
+import profileRoutes from "./profile_routes.js";
 
 const swaggerOpt = {
   definition: {
@@ -34,6 +35,7 @@ routes.use("/api/links", linksRoutes)
 routes.use("/api/users", usersRoutes)
 routes.use("/api", authRoutes)
 routes.use("", shortedRoutes)
+routes.use("/api/profile", profileRoutes)
 routes.use("/api-docs/api", swaggerUi.serve, swaggerUi.setup(swagger))
 
 export default routes
