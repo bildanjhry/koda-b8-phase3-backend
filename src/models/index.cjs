@@ -11,6 +11,9 @@ const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
+  console.log("DATABASE:", config.use_env_variable);
+  console.log("PG:", require.resolve("pg"));
+  console.log("SEQUELIZE:", require.resolve("sequelize"));
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
@@ -26,12 +29,12 @@ fs
       file.indexOf('.test.js') === -1
     );
   })
-.forEach(file => {
-  const imported = require(path.join(__dirname, file));
-  const defineModel = imported.default || imported;
-  const model = defineModel(sequelize, Sequelize.DataTypes);
-  db[model.name] = model;
-});
+  .forEach(file => {
+    const imported = require(path.join(__dirname, file));
+    const defineModel = imported.default || imported;
+    const model = defineModel(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+  });
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
