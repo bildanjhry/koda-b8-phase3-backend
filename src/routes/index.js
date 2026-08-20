@@ -49,7 +49,7 @@ const swagger = swaggerJSDoc(swaggerOpt)
 
 routes.use(
   "/api-docs/api",
-  swaggerUi.serveFiles(swagger),
+  swaggerUi.serve,
   swaggerUi.setup(swagger)
 )
 
