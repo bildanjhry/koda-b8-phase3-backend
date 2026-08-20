@@ -1,7 +1,9 @@
 import { Router } from "express";
 import * as profileControlleres from "../controllers/profile.ctrl.js"
+import authMiddleware from "../middlewares/auth.js";
 
 const profileRoutes = Router()
+profileRoutes.use(authMiddleware)
 
 /**
  * @swagger
