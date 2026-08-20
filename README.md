@@ -72,7 +72,7 @@ npm i
 
 ### Create .env and it should includes these
 ```env
-PORT=
+PORT=8082 <- recommended on port 8082
 JWT_KEY=
 URL=<localhost:port>
 CLIENT_URL=<fronted_url>
@@ -91,6 +91,10 @@ npx sequelize-cli db:migrate
 ```shel
 npm run dev
 ```
+
+### Access Swagger locally
+#### https://localhost:8082/api-docs/api/
+
 
 #### @author: [space_ranger](https://github.com/bildanjhry)
 
