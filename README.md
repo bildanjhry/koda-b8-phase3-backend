@@ -60,9 +60,9 @@ API Dokumentasi dari applikasi melalui Swager:
 git clone https://github.com/bildanjhry/koda-b8-phase3-backend.git
 ```
 
-### Move to directory
+### Go to directory
 ```shel
-cd koda-b8-phase3-backend
+cd ./koda-b8-phase3-backend
 ```
 
 ### Install all depedencies
