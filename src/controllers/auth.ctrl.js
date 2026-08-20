@@ -1,6 +1,6 @@
 import { constants } from "http2"
 import { default as db } from "../models/index.cjs"
-const { Users } = db
+const { Users, Profile, sequelize } = db
 import libsBcrypt from "../libs/bcrypt.js"
 import libsJwt from "../libs/jwt.js"
 
@@ -11,23 +11,39 @@ import libsJwt from "../libs/jwt.js"
  */
 
 export async function registerUser(req, res) {
+    const transaction = await sequelize.transaction()
     try {
-        const { email, password } = req.body
+        const { name, email, password } = req.body
         const hashedPass = await libsBcrypt.hashed(password)
         const user = await Users.create({
             email: email,
             password: hashedPass
-        })
+        },
+            { transaction }
+        )
+
+        await Profile.create({
+            name: name,
+            user_id: user.id
+        },
+            { transaction }
+        )
+
+        await transaction.commit()
+
         const result = {
             id: user.id,
             created_at: user.createdAt,
         }
+
         res.status(constants.HTTP_STATUS_OK).json({
             success: true,
             message: "Success create user",
             results: result
         })
     } catch (err) {
+        console.log(err)
+        await transaction.rollback()
         res.status(constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
             success: false,
             message: err.message
@@ -102,21 +118,25 @@ export async function logoutUser(req, res) {
 export async function sessionUser(req, res) {
     try {
         const id_user = req.data.id
-        const user = await Users.findByPk(id_user, 
+        const user = await Users.findByPk(id_user,
             {
                 attributes: ["id", "email", "createdAt"],
-            }
+                include: [{
+                    model: Profile,
+                    as: "profile"
+                }],
+            },
         )
 
         if (!user) {
-          const err = {}
-          err.code = 401
-          err.message = "User not found"
-          throw err
+            const err = {}
+            err.code = 401
+            err.message = "User not found"
+            throw err
         }
 
         res.status(constants.HTTP_STATUS_OK).json({
-            success:true,
+            success: true,
             message: "Success get User",
             results: user
         })
