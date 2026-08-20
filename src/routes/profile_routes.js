@@ -15,6 +15,8 @@ const profileRoutes = Router()
  *        description: Success get all profile
  *      "401":
  *        description: Unauthorized
+ *    security:
+ *       - token: []
 */
 profileRoutes.get("", profileControlleres.getAllProfile)
 
@@ -37,6 +39,8 @@ profileRoutes.get("", profileControlleres.getAllProfile)
  *        description: Success get user profile
  *      "400":
  *        description: User not found
+ *    security:
+ *      - token: []
 */
 profileRoutes.get("/:id", profileControlleres.getProfileByUser)
 

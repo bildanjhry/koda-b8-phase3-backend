@@ -15,13 +15,20 @@ const swaggerOpt = {
       version: "1.0.0",
       description: "API Documetation for Shorter Link web app",
     },
+
+    servers: [
+      {
+        url: process.env.SWAGGER_URL || "http://localhost:8082",
+      },
+    ],
+
     components: {
       securitySchemes: {
         token: {
           type: "apiKey",
           name: "Authorization",
           in: "header",
-          description:`Insert Bearer before token`
+          description: `Insert Bearer before token`
         }
       }
     }
