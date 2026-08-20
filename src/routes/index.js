@@ -46,11 +46,17 @@ const swaggerOpt = {
 
 const routes = Router()
 const swagger = swaggerJSDoc(swaggerOpt)
+
+routes.use(
+  "/api-docs/api",
+  swaggerUi.serveFiles(swagger),
+  swaggerUi.setup(swagger)
+)
+
 routes.use("/api/links", linksRoutes)
 routes.use("/api/users", usersRoutes)
 routes.use("/api", authRoutes)
 routes.use("", shortedRoutes)
 routes.use("/api/profile", profileRoutes)
-routes.use("/api/api-docs/", swaggerUi.serve, swaggerUi.setup(swagger))
 
 export default routes
