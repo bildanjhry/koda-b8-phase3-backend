@@ -42,7 +42,6 @@ export async function registerUser(req, res) {
             results: result
         })
     } catch (err) {
-        console.log(err)
         await transaction.rollback()
         res.status(constants.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
             success: false,
@@ -70,8 +69,9 @@ export async function loginUser(req, res) {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
+            secure: true,
+            sameSite: "none",
+            path: "/",
             maxAge: 1000 * 60 * 60
         })
 
@@ -98,9 +98,10 @@ export async function logoutUser(req, res) {
     try {
         res.clearCookie("token", {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
-        });
+            secure: true,
+            sameSite: "none",
+            path: "/",
+        })
 
         return res.json({
             success: true,
