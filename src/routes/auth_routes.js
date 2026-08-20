@@ -89,6 +89,8 @@ authRoutes.post("/logout", authControllers.logoutUser)
  *          description: Success get user
  *       "401":
  *          description: User not found
+ *     security:
+ *        - token: []
 */
 authRoutes.get("/session", authMiddleware, authControllers.sessionUser)
 
